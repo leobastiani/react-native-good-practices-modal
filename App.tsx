@@ -2,7 +2,7 @@ import useKeyboard from '@rnhooks/keyboard';
 import React, {useState} from 'react';
 import {
   Button,
-  Platform,
+  Dimensions,
   ScrollView,
   Text,
   TextInput,
@@ -13,6 +13,7 @@ import Modal from 'react-native-modal';
 import {
   SafeAreaProvider,
   SafeAreaView,
+  initialWindowMetrics,
   useSafeAreaFrame,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
@@ -22,15 +23,9 @@ function ModalTester() {
   const dimensions = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const frame = useSafeAreaFrame();
+  const screen = Dimensions.get('screen');
+  const window = Dimensions.get('window');
   const [visible] = useKeyboard();
-  const debug = {
-    dimensions,
-    insets,
-    frame,
-    keyboard: visible,
-    OS: Platform.OS,
-  };
-  // console.log('debug:', debug);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -39,6 +34,23 @@ function ModalTester() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Button title="Show modal" onPress={toggleModal} />
+
+      <TextInput />
+      <Text>
+        {JSON.stringify(
+          {
+            dimensions,
+            frame,
+            insets,
+            window,
+            screen,
+            initialWindowMetrics,
+            visible,
+          },
+          null,
+          2,
+        )}
+      </Text>
 
       <Modal
         isVisible={isModalVisible}
